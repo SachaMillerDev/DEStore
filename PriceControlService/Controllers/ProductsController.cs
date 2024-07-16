@@ -35,6 +35,7 @@ namespace PriceControlService.Controllers
             return product;
         }
 
+
         [HttpPost]
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
