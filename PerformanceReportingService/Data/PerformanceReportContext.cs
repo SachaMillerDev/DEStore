@@ -1,14 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using PerformanceReportingService.Models;
-using System.Collections.Generic;
-using System.Reflection.Emit;
 
 namespace PerformanceReportingService.Data
 {
     public class PerformanceReportContext : DbContext
     {
         public PerformanceReportContext(DbContextOptions<PerformanceReportContext> options)
-        : base(options)
+            : base(options)
         {
         }
 

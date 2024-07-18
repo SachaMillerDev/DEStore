@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PerformanceReportingService.Data;
+using PerformanceReportingService.Models;  // Add this line to ensure the PerformanceReport class is recognized
 
 namespace PerformanceReportingService
 {
