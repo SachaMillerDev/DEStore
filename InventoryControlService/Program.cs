@@ -1,19 +1,41 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using InventoryControlService.Data;
+using InventoryControlService.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddDbContext<InventoryControlContext>(options =>
+    options.UseInMemoryDatabase("InventoryControlDB"));
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+// Add Swagger services
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "InventoryControlService API", Version = "v1" });
+});
 
 var app = builder.Build();
+
+// Seed the database with initial data
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<InventoryControlContext>();
+    SeedData(context);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "InventoryControlService API v1");
+        c.RoutePrefix = string.Empty; // Set Swagger UI at the root of the application
+    });
 }
 
 app.UseHttpsRedirection();
@@ -23,3 +45,16 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+void SeedData(InventoryControlContext context)
+{
+    if (!context.InventoryItems.Any())
+    {
+        context.InventoryItems.AddRange(
+            new InventoryItem { Name = "Item1", Quantity = 100 },
+            new InventoryItem { Name = "Item2", Quantity = 200 },
+            new InventoryItem { Name = "Item3", Quantity = 300 }
+        );
+        context.SaveChanges();
+    }
+}

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PriceControlService", "Pric
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventoryControlService", "InventoryControlService\InventoryControlService.csproj", "{A88FBF53-2EA1-4443-B7F7-A8B163076202}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoyaltyCardService", "LoyaltyCardService\LoyaltyCardService.csproj", "{F83CC456-668B-4E3C-91CA-1841895F5B31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{A88FBF53-2EA1-4443-B7F7-A8B163076202}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A88FBF53-2EA1-4443-B7F7-A8B163076202}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A88FBF53-2EA1-4443-B7F7-A8B163076202}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F83CC456-668B-4E3C-91CA-1841895F5B31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F83CC456-668B-4E3C-91CA-1841895F5B31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F83CC456-668B-4E3C-91CA-1841895F5B31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F83CC456-668B-4E3C-91CA-1841895F5B31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
