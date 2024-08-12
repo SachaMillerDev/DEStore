@@ -8,7 +8,14 @@ namespace FinanceApprovalService.Controllers
     [ApiController]
     public class FinanceApprovalController : ControllerBase
     {
-        // Simulate a call to the existing Enabling finance system
+        // New GET endpoint for testing and browser navigation
+        [HttpGet]
+        public ActionResult<string> GetServiceStatus()
+        {
+            return Ok("FinanceApprovalService is running.");
+        }
+
+        // Existing POST endpoint
         [HttpPost]
         public async Task<ActionResult<string>> ApproveFinance([FromBody] FinanceRequest request)
         {
@@ -24,7 +31,6 @@ namespace FinanceApprovalService.Controllers
                 await Task.Delay(500); // Simulate network delay
 
                 // Simulated response from the finance system
-                // In a real-world scenario, you would call the external finance system, e.g., via HTTPClient
                 string approvalMessage = $"Finance approved for {request.CustomerName} with amount {request.Amount} over {request.DurationMonths} months.";
 
                 // Return the response

@@ -3,7 +3,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/financeapproval",
+      "launchUrl": "api/FinanceApproval",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
@@ -19,7 +19,7 @@
     "FinanceApprovalService": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/financeapproval",
+      "launchUrl": "api/FinanceApproval",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
