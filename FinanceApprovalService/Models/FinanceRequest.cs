@@ -4,5 +4,6 @@ namespace FinanceApprovalService.Models
     {
         public string CustomerName { get; set; }
         public decimal Amount { get; set; }
+        public int DurationMonths { get; set; }
     }
 }

@@ -12,12 +12,29 @@ namespace FinanceApprovalService.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> ApproveFinance([FromBody] FinanceRequest request)
         {
-            // Here you would call the external finance system, e.g., via HTTP
-            // For this example, we'll just simulate the response
-            await Task.Delay(500); // Simulate network delay
+            // Validate the request
+            if (request == null || string.IsNullOrWhiteSpace(request.CustomerName) || request.Amount <= 0)
+            {
+                return BadRequest("Invalid finance request data.");
+            }
 
-            // Simulated response from the finance system
-            return Ok("Finance approved for " + request.CustomerName);
+            try
+            {
+                // Simulate a delay that might occur during an HTTP call to an external service
+                await Task.Delay(500); // Simulate network delay
+
+                // Simulated response from the finance system
+                // In a real-world scenario, you would call the external finance system, e.g., via HTTPClient
+                string approvalMessage = $"Finance approved for {request.CustomerName} with amount {request.Amount} over {request.DurationMonths} months.";
+
+                // Return the response
+                return Ok(approvalMessage);
+            }
+            catch (System.Exception ex)
+            {
+                // Log the exception (logging not implemented here)
+                return StatusCode(500, "An error occurred while processing the finance request.");
+            }
         }
     }
 }
