@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using InventoryControlService.Data;
 using InventoryControlService.Models;
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,10 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "InventoryControlService API", Version = "v1" });
 });
 
+// Add logging
+builder.Services.AddLogging();
+
+// Build the app
 var app = builder.Build();
 
 // Seed the database with initial data
@@ -37,6 +42,22 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = string.Empty; // Set Swagger UI at the root of the application
     });
 }
+
+// Custom error handling middleware
+app.Use(async (context, next) =>
+{
+    try
+    {
+        await next.Invoke();
+    }
+    catch (Exception ex)
+    {
+        var logger = app.Services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An unhandled exception occurred.");
+        context.Response.StatusCode = 500;
+        await context.Response.WriteAsync("An unexpected fault happened. Try again later.");
+    }
+});
 
 app.UseHttpsRedirection();
 

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PriceControlService.Data;
 using PriceControlService.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PriceControlService.Controllers
@@ -34,7 +35,6 @@ namespace PriceControlService.Controllers
             }
             return product;
         }
-
 
         [HttpPost]
         public async Task<ActionResult<Product>> PostProduct(Product product)
@@ -68,5 +68,34 @@ namespace PriceControlService.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
+
+        [HttpPost("updatePrice")]
+        public async Task<IActionResult> UpdatePrice([FromBody] ProductUpdateModel model)
+        {
+            var product = await _context.Products.FindAsync(model.ProductId);
+            if (product == null)
+            {
+                return NotFound($"Product with ID {model.ProductId} not found.");
+            }
+
+            // Logic to adjust price based on quantity
+            if (model.Quantity < 50) // Example logic: lower price if inventory is low
+            {
+                product.Price *= 0.9m; // Apply a 10% discount
+            }
+            else
+            {
+                product.Price *= 1.1m; // Increase price by 10% if inventory is high
+            }
+
+            await _context.SaveChangesAsync();
+            return Ok(new { Message = "Price updated based on inventory changes" });
+        }
+    }
+
+    public class ProductUpdateModel
+    {
+        public int ProductId { get; set; }
+        public int Quantity { get; set; }
     }
 }

@@ -3,7 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using InventoryControlService.Data;
 using InventoryControlService.Models;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace InventoryControlService.Controllers
 {
@@ -12,10 +15,12 @@ namespace InventoryControlService.Controllers
     public class InventoryItemsController : ControllerBase
     {
         private readonly InventoryControlContext _context;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public InventoryItemsController(InventoryControlContext context)
+        public InventoryItemsController(InventoryControlContext context, IHttpClientFactory httpClientFactory)
         {
             _context = context;
+            _httpClientFactory = httpClientFactory;
         }
 
         [HttpGet]
@@ -50,8 +55,24 @@ namespace InventoryControlService.Controllers
             {
                 return BadRequest();
             }
+
             _context.Entry(inventoryItem).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+
+            // Notify the PriceControlService
+            using (var client = _httpClientFactory.CreateClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:5001"); // Ensure this is the correct address for PriceControlService
+                var content = new StringContent(JsonConvert.SerializeObject(new { ProductId = id, Quantity = inventoryItem.Quantity }), Encoding.UTF8, "application/json");
+                var result = await client.PostAsync("/api/products/updatePrice", content);
+
+                if (!result.IsSuccessStatusCode)
+                {
+                    // Log and handle error (you can expand this to handle specific status codes, etc.)
+                    return StatusCode((int)result.StatusCode, "Error notifying PriceControlService.");
+                }
+            }
+
             return NoContent();
         }
 
